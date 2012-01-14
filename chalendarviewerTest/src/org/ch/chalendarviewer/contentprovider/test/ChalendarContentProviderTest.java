@@ -58,9 +58,12 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         // Form an array specifying which columns to return. 
         String[] projection = new String[] {
                 AuthUser._ID,
+                AuthUser.CLIENT_ID,
+                AuthUser.CLIENT_SECRET,                
                 AuthUser.ACCESS_TOKEN,
                 AuthUser.AUTH_CODE,
-                AuthUser.EMAIL
+                AuthUser.EMAIL,
+                AuthUser.EXPIRATION_DATE
         };
 
         // Get the base URI for the Auth users table content provider.
@@ -112,9 +115,12 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         // Form an array specifying which columns to return. 
         String[] projection = new String[] {
                 AuthUser._ID,
+                AuthUser.CLIENT_ID,
+                AuthUser.CLIENT_SECRET,                
                 AuthUser.ACCESS_TOKEN,
                 AuthUser.AUTH_CODE,
-                AuthUser.EMAIL
+                AuthUser.EMAIL,
+                AuthUser.EXPIRATION_DATE
         };
 
         // Get the base URI for the Auth users table content provider.
@@ -141,13 +147,18 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         
         ContentValues values = new ContentValues();
 
+         values.put(AuthUser.CLIENT_ID, "uno_ci");
+         values.put(AuthUser.CLIENT_SECRET, "uno_cs");
          values.put(AuthUser.ACCESS_TOKEN, "uno_at");
          values.put(AuthUser.AUTH_CODE, "uno_ac");
          values.put(AuthUser.EMAIL, "tomas@gmail");
          
+         
          Uri uri = provider.insert(AuthUser.CONTENT_URI, values);
          Log.d(TAG, "Result insert: " + uri);
          
+         values.put(AuthUser.CLIENT_ID, "dos_ci");
+         values.put(AuthUser.CLIENT_SECRET, "dos_cs");
          values.put(AuthUser.ACCESS_TOKEN, "dos_at");
          values.put(AuthUser.AUTH_CODE, "dos_ac");
          values.put(AuthUser.EMAIL, "juan@gmail");
@@ -155,6 +166,8 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
          uri = provider.insert(AuthUser.CONTENT_URI, values);
          Log.d(TAG, "Result insert: " + uri);
          
+         values.put(AuthUser.CLIENT_ID, "tres_ci");
+         values.put(AuthUser.CLIENT_SECRET, "tres_cs");
          values.put(AuthUser.ACCESS_TOKEN, "tres_at");
          values.put(AuthUser.AUTH_CODE, "tres_ac");
          values.put(AuthUser.EMAIL, "vitor@gmail");
