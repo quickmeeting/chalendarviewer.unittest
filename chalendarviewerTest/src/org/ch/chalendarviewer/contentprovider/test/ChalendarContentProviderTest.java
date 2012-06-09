@@ -9,8 +9,7 @@ import android.util.Log;
 
 import org.ch.chalendarviewer.contentprovider.AuthUser;
 import org.ch.chalendarviewer.contentprovider.ChalendarContentProvider;
-
-import java.util.Calendar;
+import org.ch.chalendarviewer.contentprovider.Resource;
 
 /**
  * Class for testing purposes
@@ -41,16 +40,21 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
      * Test method
      */
     public void testDatabase(){
-        //Insert some data
+      //Insert some data
         insertData();
+        insertResourcesData();
         //Modify a record
         modifyData();
+        modifyResourceData();
         //Assert data inserted
         queryData();
+        queryResources();
         //Delete data inserted
         deleteData();
+        deleteResourcesData();
         //Assert table is empty
         queryDeletedData();
+        queryDeletedResourceData();
     }
     
     /**
@@ -223,6 +227,136 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         whereParams = new String[]{"vitor@gmail"};        
         result = provider.delete(AuthUser.CONTENT_URI, where, whereParams);
         Log.d(TAG, "Result delete: " + result);
+        
+    }
+    
+    /**
+     * Query Resource table
+     */
+    private void queryResources() {
+        // Form an array specifying which columns to return. 
+        String[] projection = new String[] {
+                Resource._ID,
+                Resource.EMAIL,
+                Resource.NAME,
+                Resource.DISPLAY_NAME
+        };
+        
+        
+
+        // Get the base URI for the Resources table.
+        Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+
+        // Make the query. 
+        Cursor managedCursor = provider.query(resources,
+                projection, // Which columns to return 
+                null,       // Which rows to return (all rows)
+                null,       // Selection arguments (none)
+                // Put the results in ascending order by email
+                AuthUser.EMAIL + " ASC");       
+
+
+        Log.d(TAG, Integer.toString(managedCursor.getCount()));
+
+        assertNotNull(managedCursor);
+        assertTrue(managedCursor.getCount() == 1);
+
+        if (managedCursor.moveToFirst()) {
+
+            String email ="" ;
+            String name = "";
+            String displayName ="";
+            int emailColumn = managedCursor.getColumnIndex(Resource.EMAIL); 
+            int nameColumn = managedCursor.getColumnIndex(Resource.NAME);
+            int displayNameColumn = managedCursor.getColumnIndex(Resource.DISPLAY_NAME);
+
+            Log.d(TAG, "EMAIL\t\tNAME\t\tDISPLAY NAME");
+            do {
+                // Get the field values
+                email = managedCursor.getString(emailColumn);
+                name = managedCursor.getString(nameColumn);
+                displayName = managedCursor.getString(displayNameColumn);
+
+                Log.d(TAG, email + "\t\t" + name + "\t\t" + displayName);
+
+            } while (managedCursor.moveToNext());
+
+            assertEquals(displayName, "SALA 5");
+        }
+    }
+    
+    /**
+     * Query data to assert that database is empty
+     */
+    private void queryDeletedResourceData() {
+        // Form an array specifying which columns to return. 
+        
+        String[] projection = new String[] {
+                Resource._ID,
+                Resource.EMAIL
+        };
+
+     // Get the base URI for the Resources table.
+        Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+
+        // Make the query. 
+        Cursor managedCursor = provider.query(resources,
+                projection, // Which columns to return 
+                null,       // Which rows to return (all rows)
+                null,       // Selection arguments (none)
+                // Put the results in ascending order by name
+                AuthUser.EMAIL + " ASC");       
+
+        assertNotNull(managedCursor);
+        assertTrue(managedCursor.getCount() == 0);
+        
+ 
+    }
+    
+    /**
+     * Example of how to insert resource Data
+     */
+    private void insertResourcesData(){
+        
+        ContentValues values = new ContentValues();
+
+         values.put(Resource.NAME, "Sala1");
+         values.put(Resource.EMAIL, "sala1@gmail");
+         values.put(Resource.DISPLAY_NAME, "SALA 1");
+         Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+         Uri uri = provider.insert(resources, values);
+         Log.d(TAG, "Result insert: " + uri);
+         
+    }
+    
+    /**
+     * Example of how to modify resource data
+     */
+    private void modifyResourceData(){
+        ContentValues values = new ContentValues();
+
+        values.put(Resource.DISPLAY_NAME, "SALA 5");
+        
+        String where = Resource.EMAIL + "=? ";
+        String[] whereParams = new String[]{"sala1@gmail"}; 
+        Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+        int result = provider.update(resources, values, where, whereParams);
+        
+        Log.d(TAG, "Result update: " + result);
+    }
+    
+    /**
+     * Example of how to deleteResourcesData
+     */
+    private void deleteResourcesData(){
+        
+        String where = Resource.EMAIL + "=?";
+        String[] whereParams = new String[]{"sala1@gmail"};
+        
+        Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+        
+        int result = provider.delete(resources, where, whereParams);
+        Log.d(TAG, "Result resource delete: " + result);
         
     }
     

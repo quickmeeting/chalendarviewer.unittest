@@ -28,7 +28,7 @@ import junit.framework.TestCase;
 
 
 /**
- * @author Tomás
+ * @author Tomï¿½s
  *
  */
 public class UserManagerTest extends AndroidTestCase {
@@ -37,7 +37,7 @@ public class UserManagerTest extends AndroidTestCase {
     
     @Override
     protected void setUp() throws Exception {
-        instance = UserManager.getInstance(getContext().getContentResolver());
+        instance = UserManager.getInstance(getContext());
     }
     
     public void testGetInstance() {
