@@ -237,7 +237,7 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         // Form an array specifying which columns to return. 
         String[] projection = new String[] {
                 Resource._ID,
-                Resource.EMAIL,
+                Resource.LINK,
                 Resource.NAME,
                 Resource.DISPLAY_NAME
         };
@@ -266,7 +266,7 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
             String email ="" ;
             String name = "";
             String displayName ="";
-            int emailColumn = managedCursor.getColumnIndex(Resource.EMAIL); 
+            int emailColumn = managedCursor.getColumnIndex(Resource.LINK); 
             int nameColumn = managedCursor.getColumnIndex(Resource.NAME);
             int displayNameColumn = managedCursor.getColumnIndex(Resource.DISPLAY_NAME);
 
@@ -293,7 +293,7 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         
         String[] projection = new String[] {
                 Resource._ID,
-                Resource.EMAIL
+                Resource.LINK
         };
 
      // Get the base URI for the Resources table.
@@ -321,7 +321,7 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         ContentValues values = new ContentValues();
 
          values.put(Resource.NAME, "Sala1");
-         values.put(Resource.EMAIL, "sala1@gmail");
+         values.put(Resource.LINK, "sala1@gmail");
          values.put(Resource.DISPLAY_NAME, "SALA 1");
          Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
          Uri uri = provider.insert(resources, values);
@@ -337,7 +337,7 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
 
         values.put(Resource.DISPLAY_NAME, "SALA 5");
         
-        String where = Resource.EMAIL + "=? ";
+        String where = Resource.LINK + "=? ";
         String[] whereParams = new String[]{"sala1@gmail"}; 
         Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
         int result = provider.update(resources, values, where, whereParams);
@@ -350,7 +350,7 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
      */
     private void deleteResourcesData(){
         
-        String where = Resource.EMAIL + "=?";
+        String where = Resource.LINK + "=?";
         String[] whereParams = new String[]{"sala1@gmail"};
         
         Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
