@@ -23,6 +23,7 @@ import android.util.Log;
 import org.ch.chalendarviewer.objects.CalendarResource;
 import org.ch.chalendarviewer.objects.Event;
 import org.ch.chalendarviewer.service.ResourceManager;
+import org.ch.chalendarviewer.service.exception.ResourceNotAvaiableException;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -56,9 +57,16 @@ public class ResourceManagerTest extends AndroidTestCase {
      * Test methods used by UI
      */
     public void testGetActiveResources(){
-        for(CalendarResource resource : instance.getActiveResources()){
-            Log.d(TAG, "Resource testing : " + resource.getId() + "/" + resource.getTitle());
+        try{
+            for(CalendarResource resource : instance.getActiveResources()){
+                Log.d(TAG, "Resource testing : " + resource.getId() + "/" + resource.getTitle());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Resource error while getting active resources => " + e.getMessage());
+            fail();
         }
+        
+        
     }
     
     /**
@@ -68,10 +76,14 @@ public class ResourceManagerTest extends AndroidTestCase {
         Calendar begin = Calendar.getInstance();
         Calendar end = new GregorianCalendar();
         end.add(Calendar.DAY_OF_MONTH, 200);
-        
-        List<?extends Event> events = instance.getEvents("1", begin, end);
-        for (Event event : events) {
-            Log.d(TAG, "Event: " + event.getId() + " / " + event.getTitle()); 
+        try{
+            List<?extends Event> events = instance.getEvents("1", begin, end);
+            for (Event event : events) {
+                Log.d(TAG, "Event: " + event.getId() + " / " + event.getTitle()); 
+            }
+        }catch (Exception e) {
+            Log.e(TAG, "Resource error while getting events from resource => " + e.getMessage());
+            fail();
         }
         Log.d(TAG, "No more events");
     }
@@ -80,7 +92,7 @@ public class ResourceManagerTest extends AndroidTestCase {
     /**
      * Test methods used by UI
      */
-    public void testPublishEvent(){
+    public void testPublishAndDeleteEvent(){
         Calendar begin = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         begin.add(Calendar.DAY_OF_YEAR,1);
@@ -93,9 +105,26 @@ public class ResourceManagerTest extends AndroidTestCase {
         ev.setTitle("SIII");
         ev.setDetails("Evento in situ");
         
-        instance.createEvent("1", ev);
+        Event createdEvent = null;
+        
+        try {
+            createdEvent = instance.createEvent("1", ev);
+        } catch (ResourceNotAvaiableException e) {
+            Log.e(TAG, "Resource error while creating event => " + e.getMessage());
+            fail();
+        }
         
         Log.d(TAG, "End of publish event");
+        
+        try {
+            instance.deleteEvent(createdEvent);
+        } catch (ResourceNotAvaiableException e) {
+            Log.e(TAG, "Resource error while deleting event => " + e.getMessage());
+            fail();
+        }
+
+        Log.d(TAG, "End of delete event");
+
     }
     
 }

@@ -7,9 +7,9 @@ import android.net.Uri;
 import android.test.ProviderTestCase2;
 import android.util.Log;
 
-import org.ch.chalendarviewer.contentprovider.AuthUser;
+import org.ch.chalendarviewer.contentprovider.AccountColumns;
 import org.ch.chalendarviewer.contentprovider.ChalendarContentProvider;
-import org.ch.chalendarviewer.contentprovider.Resource;
+import org.ch.chalendarviewer.contentprovider.ResourceColumns;
 
 /**
  * Class for testing purposes
@@ -63,27 +63,27 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
     private void queryData() {
         // Form an array specifying which columns to return. 
         String[] projection = new String[] {
-                AuthUser._ID,                      
-                AuthUser.ACCESS_TOKEN,
-                AuthUser.REFRESH_TOKEN,
-                AuthUser.EMAIL,
-                AuthUser.EXPIRATION_DATE,
-                AuthUser.ACTIVE_USER
+                AccountColumns._ID,                      
+                AccountColumns.ACCESS_TOKEN,
+                AccountColumns.REFRESH_TOKEN,
+                AccountColumns.EMAIL,
+                AccountColumns.EXPIRATION_DATE,
+                AccountColumns.ACTIVE_USER
         };
 
         // Get the base URI for the Auth users table content provider.
-        Uri authUsers =  AuthUser.CONTENT_URI;
+        Uri AccountColumnss =  AccountColumns.CONTENT_URI;
 
-        String where = AuthUser.ACTIVE_USER + "=?";
+        String where = AccountColumns.ACTIVE_USER + "=?";
         String[] whereParams = new String[]{"1"};  
         
         // Make the query. 
-        Cursor managedCursor = provider.query(authUsers,
+        Cursor managedCursor = provider.query(AccountColumnss,
                 projection, // Which columns to return 
                 where,       // Which rows to return (all rows)
                 whereParams,       // Selection arguments (none)
                 // Put the results in ascending order by email
-                AuthUser.EMAIL + " ASC");       
+                AccountColumns.EMAIL + " ASC");       
 
         assertNotNull(managedCursor);
         assertTrue(managedCursor.getCount() == 1);
@@ -94,10 +94,10 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
             String token; 
             String authCode;
             String expDate;
-            int emailColumn = managedCursor.getColumnIndex(AuthUser.EMAIL); 
-            int tokenColumn = managedCursor.getColumnIndex(AuthUser.ACCESS_TOKEN);
-            int authColdeColumn = managedCursor.getColumnIndex(AuthUser.REFRESH_TOKEN);
-            int expDateColumn = managedCursor.getColumnIndex(AuthUser.EXPIRATION_DATE);
+            int emailColumn = managedCursor.getColumnIndex(AccountColumns.EMAIL); 
+            int tokenColumn = managedCursor.getColumnIndex(AccountColumns.ACCESS_TOKEN);
+            int authColdeColumn = managedCursor.getColumnIndex(AccountColumns.REFRESH_TOKEN);
+            int expDateColumn = managedCursor.getColumnIndex(AccountColumns.EXPIRATION_DATE);
             
             Log.d(TAG,"EMAIL\t  \tTOKEN\t  \tAUTH_CODE");
             do {
@@ -125,23 +125,23 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
     private void queryDeletedData() {
         // Form an array specifying which columns to return. 
         String[] projection = new String[] {
-                AuthUser._ID,
-                AuthUser.ACCESS_TOKEN,
-                AuthUser.REFRESH_TOKEN,
-                AuthUser.EMAIL,
-                AuthUser.EXPIRATION_DATE
+                AccountColumns._ID,
+                AccountColumns.ACCESS_TOKEN,
+                AccountColumns.REFRESH_TOKEN,
+                AccountColumns.EMAIL,
+                AccountColumns.EXPIRATION_DATE
         };
 
         // Get the base URI for the Auth users table content provider.
-        Uri authUsers =  AuthUser.CONTENT_URI;
+        Uri AccountColumnss =  AccountColumns.CONTENT_URI;
 
         // Make the query. 
-        Cursor managedCursor = provider.query(authUsers,
+        Cursor managedCursor = provider.query(AccountColumnss,
                 projection, // Which columns to return 
                 null,       // Which rows to return (all rows)
                 null,       // Selection arguments (none)
                 // Put the results in ascending order by name
-                AuthUser.EMAIL + " ASC");       
+                AccountColumns.EMAIL + " ASC");       
 
         assertNotNull(managedCursor);
         assertTrue(managedCursor.getCount() == 0);
@@ -156,30 +156,30 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         
         ContentValues values = new ContentValues();
 
-         values.put(AuthUser.ACCESS_TOKEN, "uno_at");
-         values.put(AuthUser.REFRESH_TOKEN, "uno_ac");
-         values.put(AuthUser.EMAIL, "tomas@gmail");
-         values.put(AuthUser.ACTIVE_USER, false);
+         values.put(AccountColumns.ACCESS_TOKEN, "uno_at");
+         values.put(AccountColumns.REFRESH_TOKEN, "uno_ac");
+         values.put(AccountColumns.EMAIL, "tomas@gmail");
+         values.put(AccountColumns.ACTIVE_USER, false);
          
          
-         Uri uri = provider.insert(AuthUser.CONTENT_URI, values);
+         Uri uri = provider.insert(AccountColumns.CONTENT_URI, values);
          Log.d(TAG, "Result insert: " + uri);
          
-         values.put(AuthUser.ACCESS_TOKEN, "dos_at");
-         values.put(AuthUser.REFRESH_TOKEN, "dos_ac");
-         values.put(AuthUser.EMAIL, "juan@gmail");
-         values.put(AuthUser.ACTIVE_USER, false);
-         values.put(AuthUser.EXPIRATION_DATE, "2012-03-17 11:11:11.111");
+         values.put(AccountColumns.ACCESS_TOKEN, "dos_at");
+         values.put(AccountColumns.REFRESH_TOKEN, "dos_ac");
+         values.put(AccountColumns.EMAIL, "juan@gmail");
+         values.put(AccountColumns.ACTIVE_USER, false);
+         values.put(AccountColumns.EXPIRATION_DATE, "2012-03-17 11:11:11.111");
          
-         uri = provider.insert(AuthUser.CONTENT_URI, values);
+         uri = provider.insert(AccountColumns.CONTENT_URI, values);
          Log.d(TAG, "Result insert: " + uri);
          
-         values.put(AuthUser.ACCESS_TOKEN, "tres_at");
-         values.put(AuthUser.REFRESH_TOKEN, "tres_ac");
-         values.put(AuthUser.EMAIL, "vitor@gmail");
-         values.put(AuthUser.ACTIVE_USER, true);
+         values.put(AccountColumns.ACCESS_TOKEN, "tres_at");
+         values.put(AccountColumns.REFRESH_TOKEN, "tres_ac");
+         values.put(AccountColumns.EMAIL, "vitor@gmail");
+         values.put(AccountColumns.ACTIVE_USER, true);
          
-         uri = provider.insert(AuthUser.CONTENT_URI, values);
+         uri = provider.insert(AccountColumns.CONTENT_URI, values);
          Log.d(TAG, "Result insert: " + uri);
     }
     
@@ -189,22 +189,22 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
     private void modifyData(){
         ContentValues values = new ContentValues();
 
-        values.put(AuthUser.REFRESH_TOKEN, "vitor_ac");
-        values.put(AuthUser.ACCESS_TOKEN,"vitor_at");
-        values.put(AuthUser.ACTIVE_USER, false);
+        values.put(AccountColumns.REFRESH_TOKEN, "vitor_ac");
+        values.put(AccountColumns.ACCESS_TOKEN,"vitor_at");
+        values.put(AccountColumns.ACTIVE_USER, false);
         
-        String where = AuthUser.EMAIL + "=?";
+        String where = AccountColumns.EMAIL + "=?";
         String[] whereParams = new String[]{"vitor@gmail"};        
-        int result = provider.update(AuthUser.CONTENT_URI, values, where, whereParams);
+        int result = provider.update(AccountColumns.CONTENT_URI, values, where, whereParams);
         
         Log.d(TAG, "Result update1: " + result);
         
         values.clear();
-        values.put(AuthUser.ACTIVE_USER, true);
+        values.put(AccountColumns.ACTIVE_USER, true);
         
-        where = AuthUser.EMAIL + "=?";
+        where = AccountColumns.EMAIL + "=?";
         whereParams = new String[]{"juan@gmail"};        
-        result = provider.update(AuthUser.CONTENT_URI, values, where, whereParams);
+        result = provider.update(AccountColumns.CONTENT_URI, values, where, whereParams);
         
         Log.d(TAG, "Result update2: " + result);
     }
@@ -215,17 +215,17 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
      */
     private void deleteData(){
         
-        String where = AuthUser.EMAIL + "=?";
+        String where = AccountColumns.EMAIL + "=?";
         String[] whereParams = new String[]{"tomas@gmail"};        
-        int result = provider.delete(AuthUser.CONTENT_URI, where, whereParams);
+        int result = provider.delete(AccountColumns.CONTENT_URI, where, whereParams);
         Log.d(TAG, "Result delete: " + result);
         
         whereParams = new String[]{"juan@gmail"};        
-        result = provider.delete(AuthUser.CONTENT_URI, where, whereParams);
+        result = provider.delete(AccountColumns.CONTENT_URI, where, whereParams);
         Log.d(TAG, "Result delete: " + result);
         
         whereParams = new String[]{"vitor@gmail"};        
-        result = provider.delete(AuthUser.CONTENT_URI, where, whereParams);
+        result = provider.delete(AccountColumns.CONTENT_URI, where, whereParams);
         Log.d(TAG, "Result delete: " + result);
         
     }
@@ -236,24 +236,23 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
     private void queryResources() {
         // Form an array specifying which columns to return. 
         String[] projection = new String[] {
-                Resource._ID,
-                Resource.LINK,
-                Resource.NAME,
-                Resource.DISPLAY_NAME
+                ResourceColumns._ID,
+                ResourceColumns.LINK,
+                ResourceColumns.NAME,
+                ResourceColumns.DISPLAY_NAME
         };
         
         
 
         // Get the base URI for the Resources table.
-        Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+        Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
 
         // Make the query. 
         Cursor managedCursor = provider.query(resources,
                 projection, // Which columns to return 
                 null,       // Which rows to return (all rows)
                 null,       // Selection arguments (none)
-                // Put the results in ascending order by email
-                AuthUser.EMAIL + " ASC");       
+                null);       
 
 
         Log.d(TAG, Integer.toString(managedCursor.getCount()));
@@ -266,14 +265,14 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
             String email ="" ;
             String name = "";
             String displayName ="";
-            int emailColumn = managedCursor.getColumnIndex(Resource.LINK); 
-            int nameColumn = managedCursor.getColumnIndex(Resource.NAME);
-            int displayNameColumn = managedCursor.getColumnIndex(Resource.DISPLAY_NAME);
+            int linkColumn = managedCursor.getColumnIndex(ResourceColumns.LINK); 
+            int nameColumn = managedCursor.getColumnIndex(ResourceColumns.NAME);
+            int displayNameColumn = managedCursor.getColumnIndex(ResourceColumns.DISPLAY_NAME);
 
-            Log.d(TAG, "EMAIL\t\tNAME\t\tDISPLAY NAME");
+            Log.d(TAG, "LINK\t\tNAME\t\tDISPLAY NAME");
             do {
                 // Get the field values
-                email = managedCursor.getString(emailColumn);
+                email = managedCursor.getString(linkColumn);
                 name = managedCursor.getString(nameColumn);
                 displayName = managedCursor.getString(displayNameColumn);
 
@@ -292,12 +291,12 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         // Form an array specifying which columns to return. 
         
         String[] projection = new String[] {
-                Resource._ID,
-                Resource.LINK
+                ResourceColumns._ID,
+                ResourceColumns.LINK
         };
 
      // Get the base URI for the Resources table.
-        Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+        Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
 
         // Make the query. 
         Cursor managedCursor = provider.query(resources,
@@ -305,7 +304,7 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
                 null,       // Which rows to return (all rows)
                 null,       // Selection arguments (none)
                 // Put the results in ascending order by name
-                AuthUser.EMAIL + " ASC");       
+                AccountColumns.EMAIL + " ASC");       
 
         assertNotNull(managedCursor);
         assertTrue(managedCursor.getCount() == 0);
@@ -320,10 +319,10 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         
         ContentValues values = new ContentValues();
 
-         values.put(Resource.NAME, "Sala1");
-         values.put(Resource.LINK, "sala1@gmail");
-         values.put(Resource.DISPLAY_NAME, "SALA 1");
-         Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+         values.put(ResourceColumns.NAME, "Sala1");
+         values.put(ResourceColumns.LINK, "sala1@gmail");
+         values.put(ResourceColumns.DISPLAY_NAME, "SALA 1");
+         Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
          Uri uri = provider.insert(resources, values);
          Log.d(TAG, "Result insert: " + uri);
          
@@ -335,11 +334,11 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
     private void modifyResourceData(){
         ContentValues values = new ContentValues();
 
-        values.put(Resource.DISPLAY_NAME, "SALA 5");
+        values.put(ResourceColumns.DISPLAY_NAME, "SALA 5");
         
-        String where = Resource.LINK + "=? ";
+        String where = ResourceColumns.LINK + "=? ";
         String[] whereParams = new String[]{"sala1@gmail"}; 
-        Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+        Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
         int result = provider.update(resources, values, where, whereParams);
         
         Log.d(TAG, "Result update: " + result);
@@ -350,10 +349,10 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
      */
     private void deleteResourcesData(){
         
-        String where = Resource.LINK + "=?";
+        String where = ResourceColumns.LINK + "=?";
         String[] whereParams = new String[]{"sala1@gmail"};
         
-        Uri resources = Uri.parse(AuthUser.CONTENT_URI + "/1/" + "resources"); 
+        Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
         
         int result = provider.delete(resources, where, whereParams);
         Log.d(TAG, "Result resource delete: " + result);
