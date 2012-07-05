@@ -72,13 +72,13 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         };
 
         // Get the base URI for the Auth users table content provider.
-        Uri AccountColumnss =  AccountColumns.CONTENT_URI;
+        Uri authUsers =  AccountColumns.CONTENT_URI;
 
         String where = AccountColumns.ACTIVE_USER + "=?";
         String[] whereParams = new String[]{"1"};  
         
         // Make the query. 
-        Cursor managedCursor = provider.query(AccountColumnss,
+        Cursor managedCursor = provider.query(authUsers,
                 projection, // Which columns to return 
                 where,       // Which rows to return (all rows)
                 whereParams,       // Selection arguments (none)
@@ -133,10 +133,11 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
         };
 
         // Get the base URI for the Auth users table content provider.
-        Uri AccountColumnss =  AccountColumns.CONTENT_URI;
+        Uri authUsers =  AccountColumns.CONTENT_URI;
+
 
         // Make the query. 
-        Cursor managedCursor = provider.query(AccountColumnss,
+        Cursor managedCursor = provider.query(authUsers,
                 projection, // Which columns to return 
                 null,       // Which rows to return (all rows)
                 null,       // Selection arguments (none)
@@ -254,7 +255,6 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
                 null,       // Selection arguments (none)
                 null);       
 
-
         Log.d(TAG, Integer.toString(managedCursor.getCount()));
 
         assertNotNull(managedCursor);
@@ -318,11 +318,10 @@ public class ChalendarContentProviderTest extends ProviderTestCase2<ChalendarCon
     private void insertResourcesData(){
         
         ContentValues values = new ContentValues();
-
-         values.put(ResourceColumns.NAME, "Sala1");
-         values.put(ResourceColumns.LINK, "sala1@gmail");
-         values.put(ResourceColumns.DISPLAY_NAME, "SALA 1");
-         Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
+        values.put(ResourceColumns.NAME, "Sala1");
+        values.put(ResourceColumns.LINK, "sala1@gmail");
+        values.put(ResourceColumns.DISPLAY_NAME, "SALA 1");
+        Uri resources = Uri.parse(AccountColumns.CONTENT_URI + "/1/" + "resources"); 
          Uri uri = provider.insert(resources, values);
          Log.d(TAG, "Result insert: " + uri);
          
